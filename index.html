@@ -3,6 +3,7 @@
 <head>
 
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <!--  <link rel="stylesheet" type="text/css" href="assets/css/reset.css">  -->
     <!-- Link to the Bootstrap CDN. link syntax from getbootstrap.com -->
@@ -10,120 +11,176 @@
     <link rel="stylesheet" type="text/css" href="assets/css/style.css">
       
     <title>Crystal Magic Game</title>
-  <style type="text/css">
+
+<style type="text/css">
 
     .CrystalImageClass {
-      width: 300px;
-      height: 300px;
+      width: 100px;
+      height: 150px;
+      border: 10px;
+      border-color: #05618b;
+      margin: 10px;
     }
   </style>
 
 </head>
 <body>
 
-    <div class="container">
+  <div class="container">
+    <!-- Game Header -->
+    <div id="GameHeaderID">
+      <h2 class="text-center", id="GameTitleDIV">Crystal Game</h2>
+      <hr>
+      <p>Put the instructions here</p>
+    </div>  
 
-        <!--    <div class="jumbotron". id="game-header">  -->
-              <div id="game-header">
-                <h2 id="game-title">Crystal Magic Game</h2>
-              <hr>
-              <p>Put the instructions here</p>
-            </div>
-        
-            <!--  set up screen output regions  -->
-            <div>
-              <p id="NumWins"></p>
-              <p id="CurCategory"></p>
-              <h2 id="CurGuessPhrase"></h2>
-              <p id="GuessCount"></p>
-              <p id="UsedLetters"></p>
-              <hr>
-              <p id="AlertMsg"></p>
-            </div>
+    <!-- Target Number section-->      
+    <div>  
+      <p class="text-center", id="TargetNumDIV">Target Number: </p>
+    </div>
+      
+    <!--  set up screen output regions  -->
+    <div>
+      <p id="RunningSumDIV"></p>
+    </div>
+    <div>
+      <p id="NumWinsDIV"></p>
+    </div>
+
+    <!-- Note that this div is now empty. We will fill it dynamically -->
+    <div id="CrystalsDIV">
+    </div>
+
+    <div class="card">
+      <button id="PlayAgainBTN" class="btn btn-primary"><span>Play Again</span></button>
+    </div>
           
-          </div>
-  <h1>Number to Guess: <span id="number-to-guess"></span></h1>
 
-  <!-- Note that this div is now empty. We will fill it dynamically -->
-  <div id="Crystals">
-  </div>
 
   <!-- JAVASCRIPT  -->
   <!-- ========================================= -->
   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-
   <script type="text/javascript">
+  // Global Variable Declarations
+  var DebugOn = true;    // Boolean - Debug flag
 
-var DebugOn = true;
+  $(document).ready(function() {
+    if (DebugOn) { console.log ("Begin $(document).ready(function())") }   
 
-  var targetNumber = 0;
-  targetNumber = Math.floor(Math.random() * 102) + 1;
-  if (DebugOn) { console.log ("Target number is: " + targetNumber )}    
-  targetNumber += 18;
-  if (DebugOn) { console.log ("Target number is: " + targetNumber )}    
+    // Local to function Variable Declarations
+    var targetNum = 0;     // Integer - Target number player is trying to get to
+    var targetMin = 19;    // Integer - Minimum value for targetNum
+    var targetMax = 120;   // Integer - Maximum value for targetNum
+    var crystalVal = 0     // Integer - temp holds a crystal number 
+    var crystalMin = 1;    // Integer - Minimum value for a crystal
+    var crystalMax = 12;   // Integer - Maximum value for a crystal
+    var NumCrystals = 4;   // Integer - The number of crystals on the page with hidden numbers
+    var RunningSum = 0;    // Integer - The current or running sum from the player's clicks
+    var WinCount = 0;      // Integer - Number of games won
+    var PlayAgainFlag = false; // Boolean - Flag to prompt user if they want to play again.
+    
+    //*************************************************************************
+    // Program Main
+    //*************************************************************************
 
-  $("#number-to-guess").text(targetNumber);
+    // Get the target number - use random number generator to get a number 
+    // between targetMin and targetMax and display to screen
+    targetNum = Math.floor(Math.random() * (targetMax-targetMin+1) + targetMin); 
+    if (DebugOn) { console.log ("Target number is: " + targetNum )}    
 
-  var counter = 0;
+    $("#TargetNumDIV").text("Target Number: " + targetNum);
+    $("#RunningSumDIV").text("Current Sum: " + RunningSum);
+    $("#NumWinsDIV").text("Number Wins: " + WinCount);
 
-  // Now for the hard part. Creating multiple crystals each with their own unique number value.
+    // Use a for loop to create crystal objects for every crystal image on the page.
+    for (var i = 0; i < NumCrystals; i++) {
 
-  // We begin by expanding our array to include four options.
-  var numberOptions = [0, 0, 0, 0];
-  // ... we generate a random number
- 
+      // For each iteration, we will create an imageCrystal "empty" object (aka pointer)
+      var imageCrystal = $("<img>");
+          
+      // First each crystal object will be given the class ".CrystalImageClass"
+      // This will allow the CSS to take effect.
+      imageCrystal.addClass("CrystalImageClass");
 
-  // Next we create a for loop to create crystals for every numberOption.
-  for (var i = 0; i < numberOptions.length; i++) {
-    var random = Math.floor(Math.random() * 12) + 1;
-    numberOptions[i] = random;
-if (DebugOn) { console.log ("Random crystal" + i + " is " + random )}    
+      // Each imageCrystal will be given a src link to the crystal image
+      imageCrystal.attr("src", "assets/images/crystal-image"+(i+1)+".jpg");
 
-    // For each iteration, we will create an imageCrystal
-    var imageCrystal = $("<img>");
+      // Each imageCrystal will be given a data attribute called data-CrystalValue.
+      // This data attribute will be set equal to the array value.
+      // Randomly create the value for that crystal 
+      //    var random = Math.floor(Math.random() * 12) + 1;
+      crystalVal = Math.floor(Math.random() * (crystalMax-crystalMin+1) + crystalMin);
+      if (DebugOn) { console.log ("Random crystal" + i + " is " + crystalVal )}    
+      imageCrystal.attr("data-CrystalValue", crystalVal); 
 
-    // First each crystal will be given the class ".crystal-image".
-    // This will allow the CSS to take effect.
-    imageCrystal.addClass("CrystalImageClass");
+      // Lastly, each crystal image (with all it classes and attributes) will get added to the page.
+      $("#CrystalsDIV").append(imageCrystal);
+    }  // for loop
 
-    // Each imageCrystal will be given a src link to the crystal image
-    imageCrystal.attr("src", "assets/images/crystal-image"+(i+1)+".jpg");
+    // Function for the Play Again Button
+    $("#PlayAgainBTN").on("click", function() {
+      var crystalVal = [0,0,0,0];
+      // Get a new targetNum and reset the RunningSum. Display both
+      targetNum = Math.floor(Math.random() * (targetMax-targetMin+1) + targetMin); 
+      RunningSum = 0;
+      $("#TargetNumDIV").text("Target Number: " + targetNum);
+      $("#RunningSumDIV").text("Current Sum: " + RunningSum);
+//      $("#NumWinsDIV").text("Number Wins: " + WinCount);
 
-    // Each imageCrystal will be given a data attribute called data-crystalValue.
-    // This data attribute will be set equal to the array value.
-    imageCrystal.attr("data-crystalvalue", numberOptions[i]);
+      // assign new values to the crystal images
+      for (var i = 0; i < NumCrystals; i++) {
+         crystalVal[i] = Math.floor(Math.random() * (crystalMax-crystalMin+1) + crystalMin);
+         if (DebugOn) { console.log ("Random crystal" + i + " is " + crystalVal); }    
+        
+//         $("#CrystalsDIV").attr(function(i, crystalVal);
+      }
+         // need syntax to index into crystal array 
+         $(".CrystalImageClass").each(function(index) {
+             $(this).attr("data-CrystalValue", crystalVal[index]);
+             console.log("in .each func: " + $(this).attr("data-CrystalValue"))
+         });
+      // Turn off, hide, disable the PlayAgainBTN
+      $(this).hide();
+    });
 
-    // Lastly, each crystal image (with all it classes and attributes) will get added to the page.
-    $("#Crystals").append(imageCrystal);
-  }
+    // Function for the "on click" event when a crystal is clicked. This is one generic
+    // function no matter what crystal is clicked, however it will use .this to determine
+    // the data value for the particular crystal clicked  
+    
+    $(".CrystalImageClass").on("click", function() {
 
-  // This time, our click event applies to every single crystal on the page. Not just one.
-  $(".CrystalImageClass").on("click", function() {
-
-    // Determining the crystal's value requires us to extract the value from the data attribute.
-    // Using the $(this) keyword specifies that we should be extracting the crystal value of the clicked crystal.
-    // Using the .attr("data-crystalvalue") allows us to grab the value out of the "data-crystalvalue" attribute.
-    // Since attributes on HTML elements are strings, we must convert it to an integer before adding to the counter
+    // Determine the crystal's value from the data attribute using the $(this) keyword 
+    // Use .attr("data-crystalvalue") to get the value out of the "data-crystalvalue" attribute.
+    // Since attributes on HTML elements are strings, it must be converted to an integer 
+    // before adding to the RunningSum 
 
     var crystalValue = ($(this).attr("data-crystalvalue"));
     crystalValue = parseInt(crystalValue);
     // We then add the crystalValue to the user's "counter" which is a global variable.
     // Every click, from every crystal adds to the global counter.
-    counter += crystalValue;
+    RunningSum += crystalValue;
 
-    // All of the same game win-lose logic applies. So the rest remains unchanged.
-    alert("New score: " + counter);
+    // Display the Running Sum   
+    $("#RunningSumDIV").text("Current Sum: " + RunningSum);
 
-    if (counter === targetNumber) {
+    if (RunningSum === targetNum) {
       alert("You win!");
-    }
+      WinCount++;
+      $("#NumWinsDIV").text("Number Wins: " + WinCount);
+      PlayAgainFlag = true;
 
-    else if (counter >= targetNumber) {
+    } 
+    else if (RunningSum >= targetNum) {
       alert("You lose!!");
     }
 
-  });
+    if (DebugOn) { console.log ("End $(.CrystalImageClass).on function")}
+  });  //$(".CrystalImageClass").on("click", function()
 
-  </script>
+  
+  if (DebugOn) { console.log ("End $(document).ready(function())") }   
+});  // $(document).ready(function())
+if (DebugOn) { console.log ("End of HTML ")}
+</script>
 </body>
 </html>
