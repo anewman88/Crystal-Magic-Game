@@ -1,0 +1,84 @@
+body {
+/*   color: #777777;
+   background: url("../images/background.jpeg");
+   background-repeat: no-repeat;
+   background-position: center;
+   border: 20px ridge #0b7c7c; 
+   margin: auto;
+   width: 900px;
+   height: 920px; */
+}
+
+#GameContainerDIV {
+   width: 700px; 
+   height: 700px; 
+   background: url("../images/background.jpeg");
+   background-repeat: no-repeat;
+   background-position: center;
+   border: 20px ridge #0db1b1; 
+   margin: auto;
+}
+
+#GameHeaderID {
+   width: 600px;
+   padding: 25px;
+   margin: auto;
+   color: #0b7c7c;
+   position: center;
+}
+
+#DisplayAreaDIV {
+   text-align: center;
+   margin: auto;
+   position: center;
+   color: #ffffff;
+}
+#WinsLossesDIV {
+   text-align: center;
+   margin: auto;
+   position: center;
+   color: #ffffff;
+}
+
+#CrystalsDIV {
+   margin: auto;
+   position: center;
+   border: 10px;
+   border-color: #05618b;
+}
+
+.CrystalImageClass {
+   width: 100px;
+   height: 150px;
+   border: 10px;
+   border-color: #05618b;
+   margin: 10px;
+   position: center;
+ }
+
+ #InstructBTN {
+   color: white;
+/*   position: center; */
+   background-color:  #0b7c7c;
+   border: 10px outset #0db1b1; 
+   border-radius: 4px;
+/*   text-align: center; */
+/*   margin-left: 38%; */
+ }
+
+ #ResetBTN {
+   color: white;
+   background-color:  #0b7c7c;
+   border: 10px outset #0db1b1; 
+   border-radius: 4px;
+   margin-left: 11%; 
+ }
+
+ #PlayAgainBTN {
+   color: white;
+   background-color:  #0b7c7c;
+   border: 10px outset #0db1b1; 
+   border-radius: 4px;
+   margin-left: 11%;
+ }
+
