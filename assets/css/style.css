@@ -1,17 +1,6 @@
-body {
-/*   color: #777777;
-   background: url("../images/background.jpeg");
-   background-repeat: no-repeat;
-   background-position: center;
-   border: 20px ridge #0b7c7c; 
-   margin: auto;
-   width: 900px;
-   height: 920px; */
-}
-
 #GameContainerDIV {
    width: 700px; 
-   height: 700px; 
+   height: 600px; 
    background: url("../images/background.jpeg");
    background-repeat: no-repeat;
    background-position: center;
@@ -19,66 +8,69 @@ body {
    margin: auto;
 }
 
+h2 {
+   font-family: "Segoe Script", Times, serif;
+   color: #0db1b1;
+   font-size: 50px;
+   text-shadow: 3px 2px #6b7272;
+   font-weight: bold;
+}
+
 #GameHeaderID {
    width: 600px;
-   padding: 25px;
+   padding: 15px;
    margin: auto;
-   color: #0b7c7c;
-   position: center;
+   color: #0db1b1;
+   font-size: 20px;
+   font-weight: bold;
 }
 
 #DisplayAreaDIV {
+   width: 220px;
+   font-size: 20px;
    text-align: center;
    margin: auto;
    position: center;
-   color: #ffffff;
+   color: black;
+   border: solid 5px black;
+   background-color: rgb(145, 148, 150);
+   opacity: 0.6;
+   font-weight: bold;
 }
-#WinsLossesDIV {
+#OuterBoxDIV {
+   width: 230px;
+   border: solid 5px #04686b;
    text-align: center;
    margin: auto;
+   margin-top: 10px;
+   margin-bottom: 15px;
    position: center;
-   color: #ffffff;
+   color: white;
 }
 
 #CrystalsDIV {
+   font-size: 20px;
    margin: auto;
-   position: center;
    border: 10px;
-   border-color: #05618b;
 }
 
 .CrystalImageClass {
    width: 100px;
    height: 150px;
-   border: 10px;
-   border-color: #05618b;
+   border: ridge 5px #0db1b1;
    margin: 10px;
-   position: center;
  }
 
- #InstructBTN {
-   color: white;
-/*   position: center; */
+ #InstructBTN,
+ #ResetBTN,
+ #PlayAgainBTN  {
+   color: rgb(159, 159, 172);
    background-color:  #0b7c7c;
-   border: 10px outset #0db1b1; 
+   border: 8px outset #0db1b1; 
    border-radius: 4px;
-/*   text-align: center; */
-/*   margin-left: 38%; */
+   width: 130px;
+   margin: 0px 20px 0px 20px;
+   font-size: bold 20px;
  }
 
- #ResetBTN {
-   color: white;
-   background-color:  #0b7c7c;
-   border: 10px outset #0db1b1; 
-   border-radius: 4px;
-   margin-left: 11%; 
- }
-
- #PlayAgainBTN {
-   color: white;
-   background-color:  #0b7c7c;
-   border: 10px outset #0db1b1; 
-   border-radius: 4px;
-   margin-left: 11%;
- }
 
